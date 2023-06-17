@@ -1,14 +1,11 @@
 import os
 import time
 
-system = os.name
+system = 'clear' if os.name == "posix" else 'cls'
 
 
 def newMSG():
-    if system == "posix":
-        os.system('clear')
-    elif system in ("nt", "dos", "ce"):
-        os.system('CLS')
+    os.system(system)
     print("Welcome to PyParty!")
 
 

@@ -9,16 +9,13 @@ boardNames = {
     "2": "Lucky",
     "3": "Unlucky"
 }
-system = os.name
+system = 'clear' if os.name == "posix" else 'cls'
 
 
 
 # New Message
 def newMSG():
-    if system == "posix":
-        os.system('clear')
-    elif system in ("nt", "dos", "ce"):
-        os.system('CLS')
+    os.system(system)
     print("Welcome to PyParty!")
 
 
@@ -105,10 +102,7 @@ def askNumberBoard():
 
 # Confirm Settings
 def confirmSettings(names, turns, board):
-    settings = """
-    Are you sure you want to continue with these settings? (Yes/No) (y/n)\n
-    ------------------------------------------------------\n
-    """
+    settings = "Are you sure you want to continue with these settings? (Yes/No) (y/n)\n------------------------------------------------------\n"
     for player in range(len(names)):
         settings += f"Player {player + 1}: {names[player]}\n"
 

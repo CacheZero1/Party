@@ -12,7 +12,7 @@ from player import createPlayers
 from game import Game
 
 
-system = os.name
+system = 'clear' if os.name == "posix" else 'cls'
 
 turns = 0
 maxTurns = 1
@@ -26,10 +26,7 @@ def exit():
     quit()
 
 def newMSG():
-    if system == "posix":
-        os.system('clear')
-    elif system in ("nt", "dos", "ce"):
-        os.system('CLS')
+    os.system(system)
     print("Welcome to PyParty!")
 
 def reset():
