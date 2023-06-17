@@ -1,7 +1,6 @@
 import os
 import time
 from convenience import newMSG
-    
 
 def createPlayers(playNr, playerNames):
     try:
@@ -24,11 +23,12 @@ def createPlayers(playNr, playerNames):
         exit()
 
 class Player():
-    def __init__(self, name, number):
-        self.name = name
-        self.money = 0
-        self.stars = 0
-        self.turns = 0
-        self.number = number
-        self.boardPosN = 0
-        self.boardPos = 0
+    def __init__(self, name: str, number: int):
+        self.name: str = name
+        self.money: int = 0
+        self.stars: int = 0
+        self.turns: int = 0
+        self.number: int = number
+        self.boardPosN: int = 0
+        self.boardPos: int = 0
+        self.sign: str = ""
