@@ -1,13 +1,7 @@
 import os
 import time
-
-system = 'clear' if os.name == "posix" else 'cls'
-
-
-def newMSG():
-    os.system(system)
-    print("Welcome to PyParty!")
-
+from convenience import newMSG
+    
 
 def createPlayers(playNr, playerNames):
     try:

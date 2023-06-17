@@ -2,6 +2,8 @@
 import time
 import os
 
+from convenience import newMSG
+
 
 # Vars
 boardNames = {
@@ -9,14 +11,6 @@ boardNames = {
     "2": "Lucky",
     "3": "Unlucky"
 }
-system = 'clear' if os.name == "posix" else 'cls'
-
-
-
-# New Message
-def newMSG():
-    os.system(system)
-    print("Welcome to PyParty!")
 
 
 # Ask player amount

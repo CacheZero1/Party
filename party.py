@@ -10,10 +10,10 @@ from startquestions import askNumberBoard
 from startquestions import confirmSettings
 from player import createPlayers
 from game import Game
+from convenience import newMSG
 
 
-system = 'clear' if os.name == "posix" else 'cls'
-
+# Standart vars
 turns = 0
 maxTurns = 1
 players = []
@@ -22,15 +22,15 @@ boardChoice = 0
 startingPrice = 1
 lastPlayer = 0
 
+
+# Exit method
 def exit():
     quit()
 
-def newMSG():
-    os.system(system)
-    print("Welcome to PyParty!")
 
+# Reset the game vars
 def reset():
-    global turns 
+    global turns
     turns = 0
     global maxTurns
     maxTurns = 0
@@ -50,7 +50,7 @@ def reset():
     lastPlayer = 0
 
 
-
+# Game starting config
 def startGame():
 
     newMSG()
@@ -83,6 +83,7 @@ def startGame():
     newMSG()
 
 
+# Main game loop
 def GameLoop():
     while True:
         startGame()
