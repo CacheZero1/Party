@@ -158,12 +158,8 @@ def chanceSpin():
     while not keyboard.is_pressed('enter'):
         clear()
         sign = random.choice(signs)
-        print(sign)
-        
-    while not keyboard.is_pressed('enter'):
-        clear()
-        money = random.choice(1, 100)
-        print(sign + money)
+        money = random.choice(list(range(1, 101)))
+        print(str(sign) + str(money))
         
     if sign == "+":
         return money
@@ -172,11 +168,16 @@ def chanceSpin():
 
 
 # Move on board
-def boardMove(player, moves: int, boardFH: dict, boardSH: dict, blockadePrice: int):
-    boardHalf1 = True if player.boardPosN == 0 else False
+def boardMove(player, moves: int, boardFH: dict[dict], boardSH: dict[dict], blockadePrice: int):
+    global startingPriceL
     for move in range(moves):
+        boardHalf1 = True if player.boardPosN == 0 else False
         player.boardPos += 1
-        num = f"0{player.boardPos}" if player.boardPos > 9 else str(player.boardPos)
+        if boardHalf1 and player.boardPos > 12 or not boardHalf1 and player.boardPos > 24:
+            player.boardPos -= 12
+
+        num = f"0{player.boardPos}" if len(str(player.boardPos)) != 2 else str(player.boardPos)
+
 
 
         # First board side change
@@ -194,8 +195,10 @@ def boardMove(player, moves: int, boardFH: dict, boardSH: dict, blockadePrice: i
                 elif will == 'yes' or will == 'y':
                     player.money -= startingPriceL
                     startingPriceL += 1
-                    player.boardPosN += boardFH["sp" + num]["dir"]
+                    player.boardPosN = player.boardPosN +  boardFH["sp" + num]["dir"] if boardHalf1 else player.boardPosN + boardSH["sp" + num]["dir"]
                     player.boardPos = 13 if player.boardPos == 3 else 23
+                    boardHalf1 = not boardHalf1
+                    num = f"0{player.boardPos}" if len(str(player.boardPos)) != 2 else str(player.boardPos)
                     clear()
                     print("You have crossed the blockade and the price has increased!")
                     sleep(3)
@@ -215,8 +218,10 @@ def boardMove(player, moves: int, boardFH: dict, boardSH: dict, blockadePrice: i
                 elif will == 'yes' or will == 'y':
                     player.money -= startingPriceL
                     startingPriceL += 1
-                    player.boardPosN += boardFH["sp" + num]["dir"]
+                    player.boardPosN = player.boardPosN + boardSH["sp" + num]["dir"] if not boardHalf1 else player.boardPosN + boardFH["sp" + num]["dir"]
                     player.boardPos = 3 if player.boardPos == 13 else 5
+                    boardHalf1 = not boardHalf1
+                    num = f"0{player.boardPos}" if len(str(player.boardPos)) != 2 else str(player.boardPos)
                     clear()
                     print("You have crossed the blockade and the price has increased!")
                     sleep(3)
@@ -246,21 +251,19 @@ def boardMove(player, moves: int, boardFH: dict, boardSH: dict, blockadePrice: i
                 clear()
                 print("You sadly don't have enough coins to buy a ruby, better luck next time!")
                 sleep(3)
-                
-    if boardHalf1 and player.boardPos > 12:
-        player.boardPos -= 12
-    elif not boardHalf1 and player.boardPos > 24:
-        player.boardPos -= 12    
+                 
          
-    num = f"0{player.boardPos}" if player.boardPos > 9 else str(player.boardPos)       
+    num = f"0{player.boardPos}" if len(str(player.boardPos)) != 2 else str(player.boardPos)       
     if boardHalf1 and boardFH["sp" + num]["spec"] == "luck" or boardHalf1 and boardFH["sp" + num]["spec"] == "unluck" or not boardHalf1 and boardSH["sp" + num]["spec"] == "luckExtra" or not boardHalf1 and boardSH["sp" + num]["spec"] == "unluckExtra":
         addMoney = random.choice(boardFH["sp" + num]["bonus"]) if boardHalf1 else random.choice(boardSH["sp" + num]["bonus"])
         if addMoney > 0:
             clear()
             print(f"{addMoney} coins have been added to your balance!")
+            player.money += addMoney
         else:
             clear()
             print(f"{addMoney} coins have been deducted from your balance!")
+            player.money = player.money + addMoney if player.money >= abs(addMoney) else 0
             
     elif boardHalf1 and boardFH["sp" + num]["spec"] == "chance" or not boardHalf1 and boardSH["sp" + num]["spec"] == "chance":
         clear()
@@ -285,8 +288,8 @@ def boardMove(player, moves: int, boardFH: dict, boardSH: dict, blockadePrice: i
         else:
             bonus = boardSH["sp" + num]["bonus"]
             
-        print("Not a special place. " + bonus + " coins!")
-        player.money += bonus
+        print("Not a special place. " + str(bonus) + " coins!")
+        player.money += bonus if bonus != None else 0
         sleep(3)
         
     
@@ -297,15 +300,15 @@ def boardMove(player, moves: int, boardFH: dict, boardSH: dict, blockadePrice: i
 def boardPaint(playerSymbol: str, playerPos: int, board: list[str], previousPos: int):
     match playerPos:
         case 1:
-            board[80]
+            board[89] = Back.GREEN + playerSymbol + Style.RESET_ALL
         case 2:
-            board[82]
+            board[91] = Back.GREEN + playerSymbol + Style.RESET_ALL
         case 3:
-            board[60]
+            board[69] = Back.MAGENTA + playerSymbol + Style.RESET_ALL
         case 4:
-            board[49]
+            board[49] = Back.GREEN + playerSymbol + Style.RESET_ALL
         case 5:
-            board[29]
+            board[29] = Back.RED + playerSymbol + Style.RESET_ALL
         case 6:
             board[7] = Back.CYAN + playerSymbol + Style.RESET_ALL
         case 7:
@@ -313,46 +316,94 @@ def boardPaint(playerSymbol: str, playerPos: int, board: list[str], previousPos:
         case 8:
             board[3] = Back.YELLOW + playerSymbol + Style.RESET_ALL
         case 9:
-            board[27]   
+            board[27] = Back.MAGENTA + playerSymbol + Style.RESET_ALL
         case 10:
-            board[47]
+            board[47] = Back.RED + playerSymbol + Style.RESET_ALL
         case 11:
-            board[58]
+            board[67] = Back.GREEN + playerSymbol + Style.RESET_ALL
         case 12:
-            board[78]
+            board[87] = Back.BLACK + playerSymbol + Style.RESET_ALL
         case 13:
-            board[62]
+            board[71] = Back.GREEN + playerSymbol + Style.RESET_ALL
         case 14:
-            board[84]
+            board[93] = Back.MAGENTA + playerSymbol + Style.RESET_ALL
         case 15:
-            board[86]
+            board[95] = Back.GREEN + playerSymbol + Style.RESET_ALL
         case 16:
-            board[89]
+            board[97] = Back.GREEN + playerSymbol + Style.RESET_ALL
         case 17:
-            board[64]
+            board[73] = Back.GREEN + playerSymbol + Style.RESET_ALL
         case 18:
-            board[53]
+            board[53] = Back.YELLOW + playerSymbol + Style.RESET_ALL
         case 19:
-            board[33]
+            board[33] = Back.GREEN + playerSymbol + Style.RESET_ALL
         case 20:
-            board[13]
+            board[13] = Back.RED + playerSymbol + Style.RESET_ALL
         case 21:
-            board[11]
+            board[11] = Back.GREEN + playerSymbol + Style.RESET_ALL
         case 22:
-            board[9]
+            board[9] = Back.BLACK + playerSymbol + Style.RESET_ALL
         case 23:
-            board[31]
+            board[31] = Back.GREEN + playerSymbol + Style.RESET_ALL
         case 24:
-            board[51]
+            board[51] = Back.CYAN + playerSymbol + Style.RESET_ALL
             
             
     if previousPos != 0:
         match previousPos:
+            case 1:
+                board[89] = Back.GREEN + " " + Style.RESET_ALL
+            case 2:
+                board[91] = Back.GREEN + " " + Style.RESET_ALL
+            case 3:
+                board[69] = Back.MAGENTA + " " + Style.RESET_ALL
+            case 4:
+                board[49] = Back.GREEN + " " + Style.RESET_ALL
+            case 5:
+                board[29] = Back.RED + " " + Style.RESET_ALL
+            case 6:
+                board[7] = Back.CYAN + " " + Style.RESET_ALL
+            case 7:
+                board[5] = Back.GREEN + " " + Style.RESET_ALL
             case 8:
                 board[3] = Back.YELLOW + " " + Style.RESET_ALL
+            case 9:
+                board[27] = Back.MAGENTA + " " + Style.RESET_ALL
+            case 10:
+                board[47] = Back.RED + " " + Style.RESET_ALL
+            case 11:
+                board[67] = Back.GREEN + " " + Style.RESET_ALL
+            case 12:
+                board[87] = Back.BLACK + " " + Style.RESET_ALL
+            case 13:
+                board[71] = Back.GREEN + " " + Style.RESET_ALL
+            case 14:
+                board[93] = Back.MAGENTA + " " + Style.RESET_ALL
+            case 15:
+                board[95] = Back.GREEN + " " + Style.RESET_ALL
+            case 16:
+                board[97] = Back.GREEN + " " + Style.RESET_ALL
+            case 17:
+                board[73] = Back.GREEN + " " + Style.RESET_ALL
+            case 18:
+                board[53] = Back.YELLOW + " " + Style.RESET_ALL
+            case 19:
+                board[33] = Back.GREEN + " " + Style.RESET_ALL
+            case 20:
+                board[13] = Back.RED + " " + Style.RESET_ALL
+            case 21:
+                board[11] = Back.GREEN + " " + Style.RESET_ALL
+            case 22:
+                board[9] = Back.BLACK + " " + Style.RESET_ALL
+            case 23:
+                board[31] = Back.GREEN + " " + Style.RESET_ALL
+            case 24:
+                board[51] = Back.CYAN + " " + Style.RESET_ALL
+
+    return board
         
 
-    bawdw = "i3=loc8, i5=loc7"
+    
 
 
 # Main Game method
@@ -366,13 +417,31 @@ def Game(turns, maxTurns, playerObject, boardChoice, startingPrice, lastPlayer):
     playerOrder = playerOrder + othersUsers
     playerOrder = userIni(players=playerOrder, signs=symbols)
 
+
     boardFH, boardSH, boardGraphic = createBoards(board=boardChoice)
 
-    while not turns <= maxTurns:
+    while not turns >= maxTurns:
         for player in playerOrder:
             prevPos = player.boardPos
+
             moveNum = diceThrow(player.name)
+
             boardMove(player, moveNum, boardFH=boardFH, boardSH=boardSH, blockadePrice=startingPriceL)
-            boardPaint(player.sign, player.boardPos, boardGraphic, previousPos=prevPos)
+            paintedBoard = boardPaint(player.sign, player.boardPos, boardGraphic, previousPos=prevPos)
+            clear()
+            sleep(3)
+            for boardTile in paintedBoard:
+                print(boardTile, end="")
+            print("\n------------------------------")
+            for playerstats in playerObject:
+                print(f"{playerstats.name}: Coins = {playerstats.money} | Rubies = {playerstats.stars}")
+
+            sleep(5)
+
             
         turns += 1
+
+    
+    clear()
+    print("Done!")
+    sleep(10)

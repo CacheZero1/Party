@@ -150,27 +150,14 @@ def balanced():
 
     
     coloredMapList = [mapPartBlankRow, "\n", mapPartBlankSingular, maploc08, mapPartWayRow, maploc07, mapPartWayRow, maploc06, mapPartBlankShort, maploc22, mapPartWayRow, maploc21, mapPartWayRow, maploc20, mapPartBlankSingular, "\n"]
-    coloredMapList.append(mapPartBlankSingular, mapPartWayColumn, mapPartBlankLong, mapPartWayColumn, mapPartBlankShort, mapPartWayColumn, mapPartBlankLong, mapPartWayColumn, mapPartBlankSingular, "\n")
-    coloredMapList.append(mapPartBlankSingular, maploc09, mapPartBlankLong, maploc05, mapPartWayRow, maploc23, mapPartBlankLong, maploc19, mapPartBlankSingular, "\n")
-    coloredMapList.append(mapPartBlankSingular, mapPartWayColumn, mapPartBlankLong, mapPartWayColumn, mapPartBlankShort, mapPartWayColumn, mapPartBlankLong, mapPartWayColumn, mapPartBlankSingular, "\n")
-    coloredMapList.append(mapPartBlankSingular, maploc10, mapPartBlankLong, maploc04, mapPartBlankShort, maploc24, mapPartBlankLong, maploc18, mapPartBlankSingular, "\n")
-    coloredMapList.append(mapPartBlankSingular, mapPartWayColumn, mapPartBlankLong, mapPartWayColumn, mapPartBlankShort, mapPartWayColumn, mapPartBlankLong, mapPartWayColumn, mapPartBlankSingular, "\n")
-    coloredMapList.append(mapPartBlankSingular, maploc11, mapPartBlankLong, maploc03, mapPartWayRow, maploc13, mapPartBlankLong, maploc17, mapPartBlankSingular, "\n")
-    coloredMapList.append(mapPartBlankSingular, mapPartWayColumn, mapPartBlankLong, mapPartWayColumn, mapPartBlankShort, mapPartWayColumn, mapPartBlankLong, mapPartWayColumn, mapPartBlankSingular, "\n")
-    coloredMapList.append(mapPartBlankSingular, maploc12, mapPartWayRow, maploc01, mapPartWayRow, maploc02, mapPartBlankShort, maploc14, mapPartWayRow, maploc15, mapPartWayRow, maploc16, mapPartBlankSingular, "\n", mapPartBlankRow)
-    
-
-    coloredMap = mapPartBlankRow + "\n" 
-    coloredMap += mapPartBlankSingular + maploc08 + mapPartWayRow + maploc07 + mapPartWayRow + maploc06 + mapPartBlankShort + maploc22 + mapPartWayRow + maploc21 + mapPartWayRow + maploc20 + mapPartBlankSingular + "\n"
-    coloredMap += mapPartBlankSingular + mapPartWayColumn + mapPartBlankLong + mapPartWayColumn + mapPartBlankShort + mapPartWayColumn + mapPartBlankLong + mapPartWayColumn + mapPartBlankSingular + "\n"
-    coloredMap += mapPartBlankSingular + maploc09 + mapPartBlankLong + maploc05 + mapPartWayRow + maploc23 + mapPartBlankLong + maploc19 + mapPartBlankSingular + "\n"
-    coloredMap += mapPartBlankSingular + mapPartWayColumn + mapPartBlankLong + mapPartWayColumn + mapPartBlankShort + mapPartWayColumn + mapPartBlankLong + mapPartWayColumn + mapPartBlankSingular + "\n"
-    coloredMap += mapPartBlankSingular + maploc10 + mapPartBlankLong + maploc04 + mapPartBlankShort + maploc24 + mapPartBlankLong + maploc18 + mapPartBlankSingular + "\n"
-    coloredMap += mapPartBlankSingular + mapPartWayColumn + mapPartBlankLong + mapPartWayColumn + mapPartBlankShort + mapPartWayColumn + mapPartBlankLong + mapPartWayColumn + mapPartBlankSingular + "\n"
-    coloredMap += mapPartBlankSingular + maploc11 + mapPartBlankLong + maploc03 + mapPartWayRow + maploc13 + mapPartBlankLong + maploc17 + mapPartBlankSingular + "\n"
-    coloredMap += mapPartBlankSingular + mapPartWayColumn + mapPartBlankLong + mapPartWayColumn + mapPartBlankShort + mapPartWayColumn + mapPartBlankLong + mapPartWayColumn + mapPartBlankSingular + "\n"
-    coloredMap += mapPartBlankSingular + maploc12 + mapPartWayRow + maploc01 + mapPartWayRow + maploc02 + mapPartBlankShort + maploc14 + mapPartWayRow + maploc15 + mapPartWayRow + maploc16 + mapPartBlankSingular + "\n"
-    coloredMap += mapPartBlankRow
+    coloredMapList += [mapPartBlankSingular, mapPartWayColumn, mapPartBlankLong, mapPartWayColumn, mapPartBlankShort, mapPartWayColumn, mapPartBlankLong, mapPartWayColumn, mapPartBlankSingular, "\n"]
+    coloredMapList += [mapPartBlankSingular, maploc09, mapPartBlankLong, maploc05, mapPartWayRow, maploc23, mapPartBlankLong, maploc19, mapPartBlankSingular, "\n"]
+    coloredMapList += [mapPartBlankSingular, mapPartWayColumn, mapPartBlankLong, mapPartWayColumn, mapPartBlankShort, mapPartWayColumn, mapPartBlankLong, mapPartWayColumn, mapPartBlankSingular, "\n"]
+    coloredMapList += [mapPartBlankSingular, maploc10, mapPartBlankLong, maploc04, mapPartBlankShort, maploc24, mapPartBlankLong, maploc18, mapPartBlankSingular, "\n"]
+    coloredMapList += [mapPartBlankSingular, mapPartWayColumn, mapPartBlankLong, mapPartWayColumn, mapPartBlankShort, mapPartWayColumn, mapPartBlankLong, mapPartWayColumn, mapPartBlankSingular, "\n"]
+    coloredMapList += [mapPartBlankSingular, maploc11, mapPartBlankLong, maploc03, mapPartWayRow, maploc13, mapPartBlankLong, maploc17, mapPartBlankSingular, "\n"]
+    coloredMapList += [mapPartBlankSingular, mapPartWayColumn, mapPartBlankLong, mapPartWayColumn, mapPartBlankShort, mapPartWayColumn, mapPartBlankLong, mapPartWayColumn, mapPartBlankSingular, "\n"]
+    coloredMapList += [mapPartBlankSingular, maploc12, mapPartWayRow, maploc01, mapPartWayRow, maploc02, mapPartBlankShort, maploc14, mapPartWayRow, maploc15, mapPartWayRow, maploc16, mapPartBlankSingular, "\n", mapPartBlankRow]
 
     return boardFH, boardSH, coloredMapList
 
