@@ -43,7 +43,7 @@ def starterPlayer(starters: list, starterNrs: list, playObjs, isStr: bool):
             starters.append({"name": playObj.name, "number": spunNumber})
             
         starterNrs.append(spunNumber)
-        sleep(3)
+        sleep(7)
         
 
 # Filter highest
@@ -76,15 +76,14 @@ def startSpin(playerObj):
         print("We have more than 1 starter, so let's spin again!")
         starterNr = []
         starter = []
-        sleep(3)
+        sleep(5)
         
         starterPlayer(starters=starter, starterNrs=starterNr, playObjs=res, isStr=True)
 
         res = []
-        sleep(3)
         
         starterFilter(userList=starter, compare=starterNr, addTo=res)
-        sleep(3)
+        sleep(5)
 
     clear()
     print(f"Ok, look's like {res[0]['name']} is starting")
@@ -124,7 +123,8 @@ def diceThrow(name: str):
         print(num)
     clear()
     print(f"{name} rolled a {num}!")
-    sleep(3)
+    while not keyboard.is_pressed('space'):
+        pass
 
     return num
 
@@ -177,56 +177,8 @@ def boardMove(player, moves: int, boardFH: dict[dict], boardSH: dict[dict], bloc
             player.boardPos -= 12
 
         num = f"0{player.boardPos}" if len(str(player.boardPos)) != 2 else str(player.boardPos)
-
-
-
-        # First board side change
-        if boardHalf1 and "dir" in boardFH["sp" + num].keys():
-            if checkMoney(player=player, price=blockadePrice):
-                will = blockageWill(name=player.name, price=blockadePrice)
-                while will != 'n' and will != 'no' and will != 'y' and will != 'yes':
-                    will = blockageWill(name=player.name, price=blockadePrice)
-                
-                if will == 'n' or will == 'no':
-                    clear()
-                    print("Ok, maybe next time!")
-                    sleep(3)
-                
-                elif will == 'yes' or will == 'y':
-                    player.money -= startingPriceL
-                    startingPriceL += 1
-                    player.boardPosN = player.boardPosN +  boardFH["sp" + num]["dir"] if boardHalf1 else player.boardPosN + boardSH["sp" + num]["dir"]
-                    player.boardPos = 13 if player.boardPos == 3 else 23
-                    boardHalf1 = not boardHalf1
-                    num = f"0{player.boardPos}" if len(str(player.boardPos)) != 2 else str(player.boardPos)
-                    clear()
-                    print("You have crossed the blockade and the price has increased!")
-                    sleep(3)
-                    
-                    
-        if not boardHalf1 and "dir" in boardSH["sp" + num].keys():
-            if checkMoney(player=player, price=blockadePrice):
-                will = blockageWill(name=player.name, price=blockadePrice)
-                while will != 'n' and will != 'no' and will != 'y' and will != 'yes':
-                    will = blockageWill(name=player.name, price=blockadePrice)
-                
-                if will == 'n' or will == 'no':
-                    clear()
-                    print("Ok, maybe next time!")
-                    sleep(3)
-                
-                elif will == 'yes' or will == 'y':
-                    player.money -= startingPriceL
-                    startingPriceL += 1
-                    player.boardPosN = player.boardPosN + boardSH["sp" + num]["dir"] if not boardHalf1 else player.boardPosN + boardFH["sp" + num]["dir"]
-                    player.boardPos = 3 if player.boardPos == 13 else 5
-                    boardHalf1 = not boardHalf1
-                    num = f"0{player.boardPos}" if len(str(player.boardPos)) != 2 else str(player.boardPos)
-                    clear()
-                    print("You have crossed the blockade and the price has increased!")
-                    sleep(3)
-                    
-                    
+        
+        
         # Buy star
         if boardHalf1 and boardFH["sp" + num]["spec"] == "star" or not boardHalf1 and boardSH["sp" + num]["spec"] == "star":
             if checkMoney(player=player, price=30):
@@ -237,20 +189,69 @@ def boardMove(player, moves: int, boardFH: dict[dict], boardSH: dict[dict], bloc
                 if will == 'n' or will == 'no':
                     clear()
                     print("Strange, but ok!")
-                    sleep(3)
+                    sleep(5)
                     
                 elif will == 'yes' or will == 'y':
                     player.money -= 30
                     clear()
                     print("A ruby has been added to your account!")
                     player.stars += 1
-                    sleep(3)
+                    sleep(5)
                     
                     
             else:
                 clear()
                 print("You sadly don't have enough coins to buy a ruby, better luck next time!")
-                sleep(3)
+                sleep(5)
+
+
+
+    # First board side change
+    if boardHalf1 and "dir" in boardFH["sp" + num].keys():
+        if checkMoney(player=player, price=blockadePrice):
+            will = blockageWill(name=player.name, price=blockadePrice)
+            while will != 'n' and will != 'no' and will != 'y' and will != 'yes':
+                will = blockageWill(name=player.name, price=blockadePrice)
+                
+            if will == 'n' or will == 'no':
+                clear()
+                print("Ok, maybe next time!")
+                sleep(5)
+                
+            elif will == 'yes' or will == 'y':
+                player.money -= startingPriceL
+                startingPriceL += 1
+                player.boardPosN = player.boardPosN +  boardFH["sp" + num]["dir"] if boardHalf1 else player.boardPosN + boardSH["sp" + num]["dir"]
+                player.boardPos = 13 if player.boardPos == 3 else 23
+                boardHalf1 = not boardHalf1
+                num = f"0{player.boardPos}" if len(str(player.boardPos)) != 2 else str(player.boardPos)
+                clear()
+                print("You have crossed the blockade and the price has increased!")
+                sleep(5)
+                    
+                    
+    if not boardHalf1 and "dir" in boardSH["sp" + num].keys():
+        if checkMoney(player=player, price=blockadePrice):
+            will = blockageWill(name=player.name, price=blockadePrice)
+            while will != 'n' and will != 'no' and will != 'y' and will != 'yes':
+                will = blockageWill(name=player.name, price=blockadePrice)
+                
+            if will == 'n' or will == 'no':
+                clear()
+                print("Ok, maybe next time!")
+                sleep(5)
+                
+            elif will == 'yes' or will == 'y':
+                player.money -= startingPriceL
+                startingPriceL += 1
+                player.boardPosN = player.boardPosN + boardSH["sp" + num]["dir"] if not boardHalf1 else player.boardPosN + boardFH["sp" + num]["dir"]
+                player.boardPos = 3 if player.boardPos == 13 else 5
+                boardHalf1 = not boardHalf1
+                num = f"0{player.boardPos}" if len(str(player.boardPos)) != 2 else str(player.boardPos)
+                clear()
+                print("You have crossed the blockade and the price has increased!")
+                sleep(5)
+                    
                  
          
     num = f"0{player.boardPos}" if len(str(player.boardPos)) != 2 else str(player.boardPos)       
@@ -263,23 +264,36 @@ def boardMove(player, moves: int, boardFH: dict[dict], boardSH: dict[dict], bloc
         else:
             clear()
             print(f"{addMoney} coins have been deducted from your balance!")
-            player.money = player.money + addMoney if player.money >= abs(addMoney) else 0
+            if not checkMoney(player, abs(addMoney)):
+                player.money = 0
+            else:
+                player.money += addMoney
+            
+        sleep(5)
             
     elif boardHalf1 and boardFH["sp" + num]["spec"] == "chance" or not boardHalf1 and boardSH["sp" + num]["spec"] == "chance":
         clear()
         print("Chance time!")
-        sleep(3)
+        sleep(5)
         chance = chanceSpin()
         clear()
         print("Fate has decided! " + str(chance))
-        player.money += chance
-        sleep(3)
+        if chance < 0:
+            if checkMoney(player, abs(chance)):
+                player.money += chance
+            else:
+                player.money = 0
+                
+        else:
+            player.money += chance
+
+        sleep(4)
         
     elif boardHalf1 and boardFH["sp" + num]["spec"] == "round" or not boardHalf1 and boardSH["sp" + num]["spec"] == "round":
         clear()
         print("You have received 10 coins from completing a round!")
         player.money += 10
-        sleep(3)
+        sleep(5)
         
     elif boardHalf1 and boardFH["sp" + num]["spec"] == None or not boardHalf1 and boardSH["sp" + num]["spec"] == None:
         clear()
@@ -290,7 +304,7 @@ def boardMove(player, moves: int, boardFH: dict[dict], boardSH: dict[dict], bloc
             
         print("Not a special place. " + str(bonus) + " coins!")
         player.money += bonus if bonus != None else 0
-        sleep(3)
+        sleep(4)
         
     
     player.turns += 1
@@ -425,18 +439,25 @@ def Game(turns, maxTurns, playerObject, boardChoice, startingPrice, lastPlayer):
             prevPos = player.boardPos
 
             moveNum = diceThrow(player.name)
+            sleep(1)
 
             boardMove(player, moveNum, boardFH=boardFH, boardSH=boardSH, blockadePrice=startingPriceL)
             paintedBoard = boardPaint(player.sign, player.boardPos, boardGraphic, previousPos=prevPos)
+            sleep(1)
             clear()
-            sleep(3)
             for boardTile in paintedBoard:
                 print(boardTile, end="")
             print("\n------------------------------")
             for playerstats in playerObject:
-                print(f"{playerstats.name}: Coins = {playerstats.money} | Rubies = {playerstats.stars}")
+                print(f"{playerstats.name} {playerstats.sign}: Coins = {playerstats.money} | Rubies = {playerstats.stars}")
+            print("\n------------------------------")
+            print(f"Turns: {turns}")
+            print(f"Blockade price: {startingPriceL}")
 
-            sleep(5)
+            while not keyboard.is_pressed('space'):
+                pass
+            
+            sleep(1)
 
             
         turns += 1
@@ -444,4 +465,5 @@ def Game(turns, maxTurns, playerObject, boardChoice, startingPrice, lastPlayer):
     
     clear()
     print("Done!")
-    sleep(10)
+    while not keyboard.is_pressed('space'):
+        pass
