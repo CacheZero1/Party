@@ -4,6 +4,7 @@ import tkinter.ttk as ttk
 import darkdetect
 import ttkthemes
 from PIL import Image, ImageTk
+from tkinter import messagebox
 
 
 # Main gui
@@ -81,7 +82,51 @@ def welcomeGUI():
                 #mineShaftsPreview.place_forget()
                 #gardenLabyrinthPreview.place_forget()
                 #mansionHallsPreview.place(x=115, y=20, width=468, height=349)
+                
     
+    # Name entry shower
+    def nameAvailability(playerCount, field3, field4):
+        """Make the Entries for playername appear
+
+        Args:
+            playerCount (int): amount of players playing
+            field3: Entry widget for player 3
+            field4: Entry widget for player 4
+        """
+        match playerCount:
+            case 2:
+                field3.place_forget()
+                field4.place_forget()
+                
+            case 3:
+                field3.place(x=354 ,y=520, width=164, height=30)
+                field4.place_forget()
+                
+            case 4:
+                field3.place(x=354 ,y=520, width=164, height=30)
+                field4.place(x=354 ,y=560, width=164, height=30)
+                
+                
+    # On Play-Button press
+    def playButtonPress(roundAmountVariable, playerAmountVariable, selectedMap, playerNames0, playerNames1, playerNames2, playerNames3):
+        canStart = False
+        
+        match playerAmountVariable:
+            case 2:
+                if playerNames0.strip() == "" or playerNames1.strip() == "":
+                    messagebox.showwarning("Warning: Name", "Names can't be empty!")
+                    
+                elif playerNames0.strip() == playerNames1.strip():
+                    messagebox.showwarning("Warning: Name", "Names can't be the same!")
+                    
+                else:
+                    messagebox.showinfo("Game Startup", "Please wait while the Game starts!")
+                    canStart = True
+                    
+                    
+            case 3:
+                
+                
     
     # ------------ </Widget Func> ------------
     
@@ -105,11 +150,11 @@ def welcomeGUI():
     
     radioStyle = ttk.Style()
     radioStyle.theme_use("equilux")
-    radioStyle.configure('design.TRadiobutton', font="Skia 12")
+    radioStyle.configure('designP.TRadiobutton', font="Skia 12")
     
-    rBtn2p = ttk.Radiobutton(root, text="2 Players", value=2, variable=playerAmountVar, takefocus=0, style='design.TRadiobutton')
-    rBtn3p = ttk.Radiobutton(root, text="3 Players", value=3, variable=playerAmountVar, takefocus=0, style='design.TRadiobutton')
-    rBtn4p = ttk.Radiobutton(root, text="4 Players", value=4, variable=playerAmountVar, takefocus=0, style='design.TRadiobutton')
+    rBtn2p = ttk.Radiobutton(root, text="2 Players", value=2, variable=playerAmountVar, takefocus=0, style='designP.TRadiobutton')
+    rBtn3p = ttk.Radiobutton(root, text="3 Players", value=3, variable=playerAmountVar, takefocus=0, style='designP.TRadiobutton')
+    rBtn4p = ttk.Radiobutton(root, text="4 Players", value=4, variable=playerAmountVar, takefocus=0, style='designP.TRadiobutton')
     
     rBtn2p.place(x=182, y=440, width=164, height=30)
     rBtn3p.place(x=182, y=480, width=164, height=30)
@@ -120,10 +165,48 @@ def welcomeGUI():
     playerNamePrompt = ttk.Label(root, text="Enter Player names", font="Skia 14 underline", anchor="center")
     playerNamePrompt.place(x=354, y=400, width=164, height=30)
     
+    playerNameEntry1 = ttk.Entry(root, font="Skia 12", takefocus=0)
+    playerNameEntry2 = ttk.Entry(root, font="Skia 12", takefocus=0)
+    playerNameEntry3 = ttk.Entry(root, font="Skia 12", takefocus=0)
+    playerNameEntry4 = ttk.Entry(root, font="Skia 12", takefocus=0)
+    
+    playerNameEntry1.place(x=354, y=440, width=164, height=30)
+    playerNameEntry2.place(x=354, y=480, width=164, height=30)
+    
+    rBtn2p.configure(command=lambda: nameAvailability(2, playerNameEntry3, playerNameEntry4))
+    rBtn3p.configure(command=lambda: nameAvailability(3, playerNameEntry3, playerNameEntry4))
+    rBtn4p.configure(command=lambda: nameAvailability(4, playerNameEntry3, playerNameEntry4))
+    
     
     # Round Amount Selector
     roundAmountPrompt = ttk.Label(root, text="Select Rounds", font="Skia 14 underline", anchor="center")
     roundAmountPrompt.place(x=526, y=400, width=164, height=30)
+    
+    roundAmountVar = tk.IntVar()
+    roundAmountVar.set(10)
+    
+    radioStyle1 = ttk.Style()
+    radioStyle1.theme_use("equilux")
+    radioStyle1.configure('designR.TRadiobutton', font="Skia 12")
+    
+    rBtn10R = ttk.Radiobutton(root, text="10 Rounds", value=10 ,variable=roundAmountVar, takefocus=0, style='designR.TRadiobutton')
+    rBtn20R = ttk.Radiobutton(root, text="20 Rounds", value=20 ,variable=roundAmountVar, takefocus=0, style='designR.TRadiobutton')
+    rBtn30R = ttk.Radiobutton(root, text="30 Rounds", value=30 ,variable=roundAmountVar, takefocus=0, style='designR.TRadiobutton')
+    rBtn40R = ttk.Radiobutton(root, text="40 Rounds", value=40 ,variable=roundAmountVar, takefocus=0, style='designR.TRadiobutton')
+    
+    rBtn10R.place(x=526, y=440, width=164, height=30)
+    rBtn20R.place(x=526, y=480, width=164, height=30)
+    rBtn30R.place(x=526, y=520, width=164, height=30)
+    rBtn40R.place(x=526, y=560, width=164, height=30)
+    
+    
+    # Play Button
+    buttonStyle = ttk.Style()
+    buttonStyle.theme_use("equilux")
+    buttonStyle.configure('playB.TButton', font="Skia 16", background='green')
+    
+    playBtn = ttk.Button(root, text="PLAY", cursor="bogosity", style='playB.TButton', takefocus=0, command=lambda: playButtonPress(roundAmountVariable=roundAmountVar.get(), playerAmountVariable=playerAmountVar.get(), selectedMap=Combo.get(), playerNames0=playerNameEntry1.get(), playerNames1=playerNameEntry2.get(), playerNames2=playerNameEntry3.get(), playerNames3=playerNameEntry4.get()))
+    playBtn.place(x= 9, y=620, width=680, height=50)
     
     
     # ------------ </Add widgets> ------------
