@@ -3,9 +3,40 @@ import tkinter as tk
 import tkinter.ttk as ttk
 import darkdetect
 import ttkthemes
+import json
 from PIL import Image, ImageTk
 from tkinter import messagebox
 
+
+# Setter method
+def setVars(roundsVar, playerVar, mapVar, name1Var, name2Var, name3Var, name4Var):
+    """Set the settings in the JSON file
+
+    Args:
+        roundsVar (int): Amount of Rounds
+        playerVar (int): Amount of Players
+        mapVar (str): Selected Map
+        name1Var (str): Name of Player 1
+        name2Var (str): Name of Player 2
+        name3Var (str): Name of Player 3
+        name4Var (str): Name of Player 4
+    """
+    
+    # Game data Dictionary
+    gameData = {
+        'rounds': roundsVar,
+        'players': playerVar,
+        'map': mapVar,
+        'name1': name1Var,
+        'name2': name2Var,
+        'name3': name3Var,
+        'name4': name4Var
+    }
+    
+    # Write to file
+    with open('./data.json', 'w') as json_file:
+        json.dump(gameData, json_file, indent=4)
+    
 
 # Main gui
 def welcomeGUI():
@@ -115,17 +146,33 @@ def welcomeGUI():
             case 2:
                 if playerNames0.strip() == "" or playerNames1.strip() == "":
                     messagebox.showwarning("Warning: Name", "Names can't be empty!")
-                    
-                elif playerNames0.strip() == playerNames1.strip():
-                    messagebox.showwarning("Warning: Name", "Names can't be the same!")
-                    
+                     
                 else:
                     messagebox.showinfo("Game Startup", "Please wait while the Game starts!")
                     canStart = True
                     
                     
             case 3:
+                if playerNames0.strip() == "" or playerNames1.strip() == "" or playerNames2.strip() == "":
+                    messagebox.showwarning("Warning: Name", "Names can't be empty!")
+                    
+                else:
+                    messagebox.showinfo("Game Startup", "Please wait while the Game starts!")
+                    canStart = True  
                 
+                
+            case 4:
+                if playerNames0.strip() == "" or playerNames1.strip() == "" or playerNames2.strip() == "" or playerNames3.strip() == "":
+                    messagebox.showwarning("Warning: Name", "Names can't be empty!")
+                    
+                else:
+                    messagebox.showinfo("Game Startup", "Please wait while the Game starts!")
+                    canStart = True
+                    
+                    
+        if canStart:
+            root.destroy()
+            setVars(roundsVar=roundAmountVariable, playerVar=playerAmountVariable, mapVar=selectedMap, name1Var=playerNames0, name2Var=playerNames1, name3Var=playerNames2, name4Var=playerNames3)
                 
     
     # ------------ </Widget Func> ------------
@@ -214,5 +261,4 @@ def welcomeGUI():
 
     # Mainloop
     root.mainloop()
-    
     
